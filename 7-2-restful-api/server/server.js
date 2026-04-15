@@ -10,11 +10,15 @@ import { Song } from "./models/song.model.js";
 
 const app = express();
 const PORT = process.env.PORT || 5174;
-dotenv.config();
 app.use(cors());              
 app.use(express.json());
 
-await connectDB(process.env.MONGO_URL);
+dotenv.config();
+await connectDB(process.env.MONGO_URL)
+.then(() => console.log("DB connected"))
+.catch(err => {
+    console.error("DB connection error:", err.message);
+});
 
 // api/songs (Read all songs)
 app.get("/api/songs", async (req, res) => {
